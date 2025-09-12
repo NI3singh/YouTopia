@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="public/Youtopia_Logo.png" alt="Youtopia Logo" width="400">
+  <img src="public/Youtopia_Logo.png" alt="Youtopia Logo" width="200">
 </div>
 
 <br>
