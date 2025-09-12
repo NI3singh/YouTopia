@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🎬 Youtopia
 
-## Getting Started
+**Your Personal YouTube Library with Progress Tracking**
 
-First, run the development server:
+A sleek, modern web application for managing your YouTube videos with automatic progress tracking. Never lose your place in a video again!
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+![Youtopia Preview](https://via.placeholder.com/800x400/1e293b/06b6d4?text=Youtopia)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ Features
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- 📚 **Personal Video Library** - Add and organize YouTube videos
+- ⏱️ **Progress Tracking** - Automatically saves your watching position
+- 🔍 **Smart Search** - Find videos by title or channel
+- 📊 **Multiple Sorting** - Sort by date, title, channel, or progress
+- 🗑️ **Easy Management** - Remove videos with confirmation
+- 📱 **Responsive Design** - Works on all devices
+- 🌙 **Modern UI** - Beautiful dark theme with smooth animations
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Quick Start
 
-## Learn More
+### Prerequisites
+- Node.js 18+
+- npm or yarn
 
-To learn more about Next.js, take a look at the following resources:
+### Installation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/youtopia.git
+   cd youtopia
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-## Deploy on Vercel
+3. **Set up environment variables**
+   ```bash
+   cp .env.example .env.local
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. **Start the development server**
+   ```bash
+   npm run dev
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+5. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## 🎯 How to Use
+
+1. **Add Videos**: Paste any YouTube URL and click "Add Video"
+2. **Watch**: Click on video cards to start watching
+3. **Resume**: Your progress is automatically saved every 5 seconds
+4. **Organize**: Use search and sort to manage your library
+5. **Remove**: Click the trash icon to remove videos
+
+## 🤖 Upcoming Features (AI-Powered)
+
+- 🎵 **Smart Categorization** - AI will automatically categorize videos by topic
+- 📝 **Auto Summaries** - Generate video summaries using AI
+- 🎯 **Personalized Recommendations** - AI-curated video suggestions based on your library
+- 🏷️ **Auto Tagging** - Intelligent tagging system for better organization  
+- 📊 **Watch Analytics** - AI-powered insights into your viewing patterns
+- 💬 **Video Chat** - Ask AI questions about video content
+- 🔍 **Content Search** - Search within video transcripts using AI
+- 🎨 **Smart Thumbnails** - AI-generated custom thumbnails for better visual appeal
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 14
+- **Styling**: Tailwind CSS
+- **Components**: React with Hooks
+- **Video Player**: YouTube Embed API
+
+---
+
+<div align="center">
+
+**Built with ❤️ for better YouTube watching**
+
+⭐ Star this repo if you find it useful!
+
+</div>
