@@ -4,7 +4,7 @@
 
 A sleek, modern web application for managing your YouTube videos with automatic progress tracking. Never lose your place in a video again!
 
-![Youtopia Preview](https://via.placeholder.com/800x400/1e293b/06b6d4?text=Youtopia)
+![Youtopia Preview](https://github.com/NI3singh/YouTopia/blob/main/assets/Preview_Image.png)
 
 ## ✨ Features
 
