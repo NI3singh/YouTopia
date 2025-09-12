@@ -13,7 +13,7 @@
 <div align="center">
   <img src="public/Preview_Image.png" alt="Youtopia Preview" width="800">
 </div>
-## ✨ Features
+✨ Features
 
 - 📚 **Personal Video Library** - Add and organize YouTube videos
 - ⏱️ **Progress Tracking** - Automatically saves your watching position
