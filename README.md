@@ -1,10 +1,16 @@
-# 🎬 Youtopia
+<div align="center">
+  <img src="public/Youtopia_Logo.png" alt="Youtopia Logo" width="400">
+</div>
 
-**Your Personal YouTube Library with Progress Tracking**
+<br>
 
-A sleek, modern web application for managing your YouTube videos with automatic progress tracking. Never lose your place in a video again!
+<p align="center">
+  <strong>Your Personal YouTube Library with Progress Tracking</strong>
+  <br>
+  A sleek, modern web application for managing your YouTube videos with automatic progress tracking. Never lose your place in a video again!
+</p>
 
-![Youtopia Preview](https://github.com/NI3singh/YouTopia/blob/main/assets/Preview_Image.png)
+![Youtopia Preview](https://github.com/NI3singh/YouTopia/blob/main/public/Preview_Image.png)
 
 ## ✨ Features
 
