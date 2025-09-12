@@ -6,19 +6,13 @@
 
 <p align="center">
   <strong>Your Personal YouTube Library with Progress Tracking</strong>
-  <br><br>
-  A sleek, modern web application for managing your YouTube videos with automatic progress tracking. 
   <br>
-  Never lose your place in a video again!
+  A sleek, modern web application for managing your YouTube videos with automatic progress tracking. Never lose your place in a video again!
 </p>
 
-<br>
-
 <div align="center">
-  <img src="https://github.com/NI3singh/YouTopia/blob/main/public/Preview_Image.png" alt="Youtopia Preview" width="800">
+  <img src="public/Preview_Image.png" alt="Youtopia Preview" width="800">
 </div>
-
-<br>
 ## ✨ Features
 
 - 📚 **Personal Video Library** - Add and organize YouTube videos
