@@ -7,7 +7,6 @@ import Modal from '@/components/Modal';
 import Loader from '@/components/Loader';
 import { useLoading } from '@/context/LoadingContext';
 
-
 // Helper function to parse ISO 8601 duration
 function parseISODuration(isoDuration) {
   if (!isoDuration) return 0;
@@ -24,7 +23,7 @@ function formatDuration(totalSeconds) {
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
-
+  
   if (hours > 0) {
     return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   }
@@ -39,10 +38,7 @@ export default function HomePage() {
   const [modal, setModal] = useState({ isOpen: false, title: '', message: '', onConfirm: null, isConfirmation: false });
   const { showLoader, hideLoader } = useLoading();
   const [searchTerm, setSearchTerm] = useState('');
-
-  // Prevent hydration mismatches for client-only UI
-  const [isHydrated, setIsHydrated] = useState(false);
-  useEffect(() => { setIsHydrated(true); }, []);
+  
 
   const showModal = (title, message, onConfirmCallback = null) => {
     setModal({
@@ -50,7 +46,7 @@ export default function HomePage() {
       title,
       message,
       onConfirm: onConfirmCallback,
-      isConfirmation: !!onConfirmCallback,
+      isConfirmation: !!onConfirmCallback, // If there's a callback, it's a confirmation dialog
     });
   };
 
@@ -81,8 +77,8 @@ export default function HomePage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!url) return;
-
-    showLoader();
+    
+    showLoader(); // Show the loader before the request starts
     try {
       const response = await fetch('/api/add-url', {
         method: 'POST',
@@ -90,7 +86,7 @@ export default function HomePage() {
         body: JSON.stringify({ url: url }),
       });
       const responseText = await response.text();
-
+      
       if (response.ok) {
         try {
           const data = JSON.parse(responseText);
@@ -106,7 +102,7 @@ export default function HomePage() {
     } catch (error) {
       showModal('Error', 'Failed to connect to the backend.');
     } finally {
-      hideLoader();
+      hideLoader(); // ALWAYS hide the loader when the process is finished
     }
   };
 
@@ -138,8 +134,8 @@ export default function HomePage() {
     showModal(
       `Remove ${itemType}`,
       `Are you sure you want to remove "${itemToDelete.title}"? This action cannot be undone.`,
-      async () => {
-        showLoader();
+      async () => { // This function runs when the user confirms
+        showLoader(); // Show loader before the delete request
         try {
           const response = await fetch(`/api/${itemType}s/${itemToDelete.id}`, {
             method: "DELETE",
@@ -154,19 +150,19 @@ export default function HomePage() {
         } catch (error) {
           showModal("Error", `Failed to delete ${itemType}: ${error.message}`);
         } finally {
-          hideLoader();
+          hideLoader(); // ALWAYS hide the loader
         }
       }
     );
   };
   const handleBatchDelete = async () => {
     const confirmMessage = `Are you sure you want to remove ${selectedItems.length} item(s)? This action cannot be undone.`;
-
+    
     showModal(
       'Confirm Deletion',
       confirmMessage,
-      async () => {
-        showLoader();
+      async () => { // This function runs when the user confirms
+        showLoader(); // Show loader before the batch delete request
         try {
           const response = await fetch('/api/library/batch-delete', {
             method: 'POST',
@@ -185,7 +181,7 @@ export default function HomePage() {
         } catch (error) {
           showModal('Error', 'Failed to connect to the server for batch deletion.');
         } finally {
-          hideLoader();
+          hideLoader(); // ALWAYS hide the loader
         }
       }
     );
@@ -210,7 +206,7 @@ export default function HomePage() {
                 width={200}
                 height={80}
                 priority
-                className="transition-opacity hover:opacity-80"
+                className="transition-opacity hover:opacity-80" // Optional: adds a nice hover effect
               />
             </Link>
             <div className="hidden sm:flex items-center space-x-2 text-sm text-slate-400">
@@ -232,10 +228,10 @@ export default function HomePage() {
               </span>
             </h2>
             <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-              Add YouTube videos to your personal library and never lose track of your progress again.
+              Add YouTube videos to your personal library and never lose track of your progress again. 
             </p>
           </div>
-
+          
           <div className="bg-slate-800/50 backdrop-blur-sm p-8 rounded-2xl shadow-2xl border border-slate-700/50 hover:border-cyan-500/30 transition-all duration-300">
             <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4">
               <div className="flex-grow relative group">
@@ -243,6 +239,7 @@ export default function HomePage() {
                   type="text"
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
+                  // placeholder="Paste a YouTube video URL here..."
                   placeholder="Paste a YouTube video and Playlist URL here..."
                   className="w-full p-4 bg-slate-700/50 backdrop-blur-sm rounded-xl border-2 border-slate-600 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/20 transition-all duration-300 text-white placeholder-slate-400"
                 />
@@ -269,8 +266,7 @@ export default function HomePage() {
             <h2 className="text-3xl sm:text-4xl font-bold text-white flex items-center">
               <div className="w-1 h-10 bg-gradient-to-b from-cyan-400 to-blue-500 rounded-full mr-4"></div>
               Your Library
-              {/* Show the count only after hydration to avoid initial mismatch */}
-              {isHydrated && !isLoading && (
+              {!isLoading && (
                 <span className="ml-4 text-lg text-slate-400 font-normal">
                   ({videos.length} item{videos.length !== 1 ? 's' : ''})
                 </span>
@@ -289,31 +285,31 @@ export default function HomePage() {
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                 </div>
               </div>
-              <button
-                type="button"
+              <button 
+                type="button" // It's good practice to add type="button"
                 className="bg-slate-700 hover:bg-slate-600 text-slate-200 font-semibold py-2 px-5 rounded-lg transition-colors whitespace-nowrap"
               >
                 Search
               </button>
-            </div>
-            <button
-              onClick={() => {
-                setIsSelectMode(!isSelectMode);
-                setSelectedItems([]);
-              }}
-              title={isSelectMode ? 'Cancel Selection' : 'Select Items'}
-              className="bg-slate-700 hover:bg-slate-600 text-slate-200 font-semibold p-2.5 rounded-lg transition-colors"
-            >
-              {isSelectMode ? (
-                <span className="px-2">Cancel</span>
-              ) : (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                </svg>
-              )}
-            </button>
+              </div>
+              {/* New Select/Cancel Button */}
+              <button 
+                onClick={() => {
+                  setIsSelectMode(!isSelectMode);
+                  setSelectedItems([]);
+                }}
+                title={isSelectMode ? 'Cancel Selection' : 'Select Items'}
+                className="bg-slate-700 hover:bg-slate-600 text-slate-200 font-semibold p-2.5 rounded-lg transition-colors"
+              >
+                {isSelectMode ? (
+                  <span className="px-2">Cancel</span>
+                ) : (
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                  </svg>
+                )}
+              </button>
           </div>
-
           {isLoading ? (
             <Loader />
           ) : videos.length === 0 ? (
@@ -332,6 +328,7 @@ export default function HomePage() {
                 let percentage = 0;
                 let totalSeconds = 0;
 
+                // Only calculate progress and duration for items that are videos
                 if (item.type === 'video') {
                   totalSeconds = parseISODuration(item.duration_iso);
                   const progressSeconds = item.progress_seconds || 0;
@@ -339,7 +336,7 @@ export default function HomePage() {
                 }
                 return (
                   <Link href={`/watch/${item.type === 'playlist' ? item.first_video_id : item.id}`} key={`${item.type}-${item.id}`} onClick={handleLinkClick} className="group">
-                    <div
+                    <div 
                       onClick={() => isSelectMode && handleItemSelect(item)}
                       className={`bg-slate-800/60 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl 
                                   hover:shadow-2xl hover:shadow-cyan-500/10 h-full flex flex-col transition-all 
@@ -347,9 +344,9 @@ export default function HomePage() {
                                   hover:border-cyan-400/30
                                   ${isSelectMode ? 'cursor-pointer' : ''} 
                                   ${selectedItems.some(s => s.id === item.id && s.type === item.type) ? 'ring-2 ring-cyan-400' : ''}`}
-                      style={{
-                        animationDelay: `${index * 100}ms`
-                      }}
+                      // style={{
+                      //   animationDelay: `${index * 100}ms`
+                      // }}
                     >
                       <div className="relative w-full overflow-hidden" style={{ paddingTop: '56.25%' }}>
                         <Image
@@ -379,6 +376,7 @@ export default function HomePage() {
                             />
                           </svg>
                         </button>
+                        {/* Add this code block for the playlist badge */}
                         {item.type === 'playlist' && (
                           <div className="absolute top-3 left-3 bg-cyan-500/90 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full flex items-center space-x-1.5 z-10">
                             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7 3h10a1 1 0 011 1v12a1 1 0 01-1 1H7a1 1 0 01-1-1V4a1 1 0 011-1zM2 5h2v12H2a1 1 0 01-1-1V6a1 1 0 011-1zm2-2h2v2H4V3zm0 14h2v2H4v-2z"></path></svg>
@@ -386,14 +384,15 @@ export default function HomePage() {
                           </div>
                         )}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-                        {/* Duration badge - show only after hydration to avoid mismatch */}
-                        {isHydrated && totalSeconds > 0 && (
+                        
+                        {/* Duration badge */}
+                        {totalSeconds > 0 && (
                           <div className="absolute bottom-3 right-3 bg-black/80 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-md font-medium">
                             {formatDuration(totalSeconds)}
                           </div>
                         )}
-
+                        
+                        {/* Play icon overlay */}
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                           <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
                             <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
@@ -402,7 +401,7 @@ export default function HomePage() {
                           </div>
                         </div>
                       </div>
-
+                      
                       <div className="p-5 flex flex-col flex-grow">
                         <h3 className="font-bold text-lg text-slate-100 group-hover:text-cyan-400 transition-colors line-clamp-2 flex-grow leading-tight mb-3">
                           {item.title}
@@ -416,12 +415,12 @@ export default function HomePage() {
                           <span className="truncate">{item.channel_title}</span>
                         </div>
                       </div>
-
+                      
                       {/* Progress bar */}
                       <div className="relative">
                         <div className="w-full bg-slate-700/50 h-2">
-                          <div
-                            className="bg-gradient-to-r from-cyan-400 to-blue-500 h-2 transition-all duration-300 rounded-full"
+                          <div 
+                            className="bg-gradient-to-r from-cyan-400 to-blue-500 h-2 transition-all duration-300 rounded-full" 
                             style={{ width: `${Math.min(percentage, 100)}%` }}
                           ></div>
                         </div>
@@ -438,6 +437,7 @@ export default function HomePage() {
             </div>
           )}
         </div>
+        {/* ✅ Floating Action Bar */}
         {selectedItems.length > 0 && (
           <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50">
             <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-700 rounded-xl shadow-2xl p-4 flex items-center space-x-6">
@@ -445,7 +445,7 @@ export default function HomePage() {
                 <span className="text-white font-bold">{selectedItems.length}</span>{' '}
                 item{selectedItems.length > 1 ? 's' : ''} selected
               </p>
-              <button
+              <button 
                 onClick={handleBatchDelete}
                 className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors flex items-center space-x-2"
               >
