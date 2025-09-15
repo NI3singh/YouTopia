@@ -68,15 +68,15 @@
 - 🎵 **Smart Categorization** - AI will automatically categorize videos by topic
 - 📝 **Auto Summaries** - Generate video summaries using AI
 - 🎯 **Personalized Recommendations** - AI-curated video suggestions based on your library
-- 🏷️ **Auto Tagging** - Intelligent tagging system for better organization  
+- 🏷️ **Edit Name** - Edit Name of playlist as you like  
 - 📊 **Watch Analytics** - AI-powered insights into your viewing patterns
 - 💬 **Video Chat** - Ask AI questions about video content
-- 🔍 **Content Search** - Search within video transcripts using AI
-- 🎨 **Smart Thumbnails** - AI-generated custom thumbnails for better visual appeal
+- 🔍 **Quick Quiz** - Quick Quiz Generator for a video
+- 🎨 **Downloadable Certificate** - Downloadable Certificate after completing any playlist, with proper data.
 
 ## 🛠️ Tech Stack
 
-- **Framework**: Next.js 14
+- **Framework**: Next.js 14, Python
 - **Styling**: Tailwind CSS
 - **Components**: React with Hooks
 - **Video Player**: YouTube Embed API
