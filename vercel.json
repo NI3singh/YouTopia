@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/sync-playlists",
+      "schedule": "0 */6 * * *"
+    }
+  ]
+}

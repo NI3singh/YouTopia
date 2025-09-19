@@ -203,23 +203,57 @@ export default function HomePage() {
       <header className="relative bg-slate-900/80 backdrop-blur-xl border-b border-slate-700/50 sticky top-0 z-50">
         <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
-            <Link href="/" className="flex items-center">
-              <Image
-                src="/Youtopia_Logo.png"
-                alt="Youtopia Logo"
-                width={200}
-                height={80}
-                priority
-                className="transition-opacity hover:opacity-80"
-              />
-            </Link>
-            <div className="hidden sm:flex items-center space-x-2 text-sm text-slate-400">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span>Your personal library</span>
+            {/* Left side: Logo + title (if any) */}
+            <div className="flex items-center space-x-3">
+              <Link href="/" className="flex items-center">
+                <Image
+                  src="/Youtopia_Logo.png"
+                  alt="Youtopia Logo"
+                  width={200}
+                  height={80}
+                  priority
+                  className="transition-opacity hover:opacity-80"
+                />
+              </Link>
+              {/* You can add a title here later if needed */}
+            </div>
+
+            {/* Right side: Library + Notification bell */}
+            <div className="flex items-center space-x-6">
+              <div className="hidden sm:flex items-center space-x-2 text-sm text-slate-400">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span>Your personal library</span>
+              </div>
+
+              {/* Notification Button (placeholder) */}
+              <div>
+                <button
+                  title="Notifications"
+                  className="text-slate-400 hover:text-white transition-colors"
+                >
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 
+                        0118 14.158V11a6 6 0 10-12 0v3.159c0 
+                        .538-.214 1.055-.595 1.436L4 17h5m6 
+                        0v1a3 3 0 11-6 0v-1m6 0H9"
+                    />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </nav>
       </header>
+
 
       <main className="relative container mx-auto p-4 sm:p-6 lg:p-8">
         {/* Add Video Section */}
