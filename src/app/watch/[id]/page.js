@@ -6,6 +6,7 @@ import Link from 'next/link';
 import YouTube from 'react-youtube';
 import Image from 'next/image';
 import Loader from '@/components/Loader';
+import { useLoading } from '@/context/LoadingContext';
 
 import dynamic from 'next/dynamic';
 const NoSSRYouTube = dynamic(() => import('react-youtube'), { ssr: false });
@@ -17,7 +18,9 @@ export default function WatchPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const { showLoader, hideLoader } = useLoading();
   const [playlist, setPlaylist] = useState(null);
+  const [modal, setModal] = useState({ isOpen: false, title: '', message: '', onConfirm: null, isConfirmation: false });
 
   // Prevent hydration mismatches for small client-only UI
   const [isHydrated, setIsHydrated] = useState(false);
@@ -25,6 +28,20 @@ export default function WatchPage() {
 
   const playerRef = useRef(null);
   const intervalRef = useRef(null);
+
+  const showModal = (title, message, onConfirmCallback = null) => {
+    setModal({
+      isOpen: true,
+      title,
+      message,
+      onConfirm: onConfirmCallback,
+      isConfirmation: !!onConfirmCallback,
+    });
+  };
+
+  // const closeModal = () => {
+  //   setModal({ isOpen: false, title: '', message: '', onConfirm: null, isConfirmation: false });
+  // };
 
   useEffect(() => {
     setVideo(null);
@@ -122,6 +139,32 @@ export default function WatchPage() {
 
   const getProgressPercentage = () => {
     return duration > 0 ? (currentTime / duration) * 100 : 0;
+  };
+
+  const handleGetTranscript = async () => {
+    if (!video) return;
+
+    showLoader();
+    try {
+      const response = await fetch('/api/ai/transcript', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ videoId: video.youtube_id }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Display the transcript in a scrollable modal
+        showModal('Video Transcript', data.transcript);
+      } else {
+        showModal('Error', data.message || 'Could not fetch the transcript.');
+      }
+    } catch (error) {
+      showModal('Error', 'An error occurred while fetching the transcript.');
+    } finally {
+      hideLoader();
+    }
   };
 
   if (isLoading) {
@@ -304,6 +347,14 @@ export default function WatchPage() {
 
                   {/* Action buttons */}
                   <div className="flex flex-col sm:flex-row gap-3 lg:flex-col lg:w-48">
+                    <button 
+                      onClick={handleGetTranscript}
+                      className="bg-slate-700/50 hover:bg-slate-600/50 text-slate-200 px-4 py-3 rounded-xl transition-all duration-300 flex items-center justify-center space-x-2 border border-slate-600/50 hover:border-slate-500/50"
+                    >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        <span>Get Transcript</span>
+                    </button>
+
                     <button
                       onClick={() => {
                         if (playerRef.current) {
