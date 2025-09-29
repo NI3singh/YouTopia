@@ -28,7 +28,15 @@ export async function POST(request) {
         RETURNING id;
       `;
       const playlistValues = [playlistId, playlistData.title, playlistData.thumbnails.high.url, playlistData.channelTitle];
-      const { rows: [{ id: newPlaylistId }] } = await db.query(playlistQuery, playlistValues);
+      const dbResponse = await db.query(playlistQuery, playlistValues);
+
+      // If the query returned no rows, it means the playlist already existed.
+      if (dbResponse.rows.length === 0) {
+        return NextResponse.json({ message: `Playlist "${playlistData.title}" is already in your library.` }, { status: 409 }); // 409 Conflict is the correct status code for a duplicate.
+      }
+      
+      // If we get here, the playlist was new, so we can safely get its ID.
+      const newPlaylistId = dbResponse.rows[0].id;
 
       // 3. Get all Video IDs from the Playlist
       const playlistItemsUrl = `https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&playlistId=${playlistId}&key=${apiKey}&maxResults=50`;
@@ -86,6 +94,9 @@ export async function POST(request) {
       const values = [videoId, title, thumbnail, duration, channelTitle];
       await db.query(queryText, values);
 
+      if (dbResponse.rowCount === 0) {
+        return NextResponse.json({ message: `Video "${title}" is already in your library.` }, { status: 409 });
+      }
       return NextResponse.json({ message: 'Video added successfully!' }, { status: 200 });
     }
   } catch (error) {
