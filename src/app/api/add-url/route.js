@@ -92,9 +92,9 @@ export async function POST(request) {
         ON CONFLICT (youtube_id) DO NOTHING RETURNING *;
       `;
       const values = [videoId, title, thumbnail, duration, channelTitle];
-      await db.query(queryText, values);
+      const dbVideoResponse = await db.query(queryText, values);
 
-      if (dbResponse.rowCount === 0) {
+      if (dbVideoResponse.rowCount === 0) {
         return NextResponse.json({ message: `Video "${title}" is already in your library.` }, { status: 409 });
       }
       return NextResponse.json({ message: 'Video added successfully!' }, { status: 200 });
